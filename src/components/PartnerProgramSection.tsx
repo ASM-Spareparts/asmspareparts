@@ -19,10 +19,7 @@ const PartnerProgramSection = ({ isLoggedIn }: PartnerProgramProps) => {
     "https://plus.unsplash.com/premium_photo-1678495324281-b6e39deea8cc?q=80&w=677&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
 
   return (
-    <section
-      id="partner"
-      className="min-h-screen bg-white flex snap-start scroll-mt-16"
-    >
+    <section id="partner" className="min-h-screen bg-white flex scroll-mt-16">
       {/* Image Side (Visible on md screens and up) */}
       <div
         className="hidden md:block md:w-1/2 bg-cover bg-center"

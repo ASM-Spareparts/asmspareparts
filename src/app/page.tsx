@@ -14,10 +14,7 @@ export default function Home() {
   return (
     <div className="flex flex-col h-screen">
       <Header isLoggedIn={isLoggedIn} />
-      <main
-        id="app-scroll"
-        className="flex-grow overflow-y-auto snap-y snap-proximity scroll-smooth"
-      >
+      <main id="app-scroll" className="flex-grow overflow-y-auto scroll-smooth">
         <HeroSection />
         <PartnerProgramSection isLoggedIn={isLoggedIn} />
         <FeaturesSection />

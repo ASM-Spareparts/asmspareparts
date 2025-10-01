@@ -17,7 +17,7 @@ const features = [
     icon: <Truck className="h-8 w-8 text-slate-500" />,
     title: "Jaringan Distribusi Luas",
     description:
-      "Telah menjadi pemasok terpercaya bagi puluhan toko dan bengkel di berbagai kota. Kami siap melayani kebutuhan bisnis Anda, di mana pun lokasi Anda.",
+      "Telah menjadi pemasok terpercaya bagi ratusan toko dan bengkel di berbagai kota. Kami siap melayani kebutuhan bisnis Anda, di mana pun lokasi Anda.",
   },
   {
     icon: <CircleDollarSign className="h-8 w-8 text-slate-500" />,
@@ -31,7 +31,7 @@ const FeaturesSection = () => {
   return (
     <section
       id="features"
-      className="min-h-screen bg-slate-50 py-12 md:py-24 flex items-center snap-start scroll-mt-16"
+      className="min-h-screen bg-slate-50 py-12 md:py-24 flex items-center scroll-mt-16"
     >
       <div className="container mx-auto px-6">
         <div className="text-center mb-12">
