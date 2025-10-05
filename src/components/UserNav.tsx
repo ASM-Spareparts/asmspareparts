@@ -1,5 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -42,8 +43,16 @@ export function UserNav() {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>Profil</DropdownMenuItem>
-          <DropdownMenuItem>Riwayat Kupon</DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link href="/profile" aria-label="Menuju halaman Profil Saya">
+              Profil Saya
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link href="/undian-saya" aria-label="Menuju halaman Undian Saya">
+              Undian
+            </Link>
+          </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         {/* TODO: Hubungkan fungsi logout asli di sini */}

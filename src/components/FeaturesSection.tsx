@@ -29,19 +29,24 @@ const features = [
 
 const FeaturesSection = () => {
   return (
-    <section
-      id="features"
-      className="min-h-screen bg-slate-50 py-12 md:py-24 flex items-center scroll-mt-16"
-    >
-      <div className="container mx-auto px-6">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-slate-900">
-            Mengapa Memilih Andy Sparepart Motor?
+    <section id="features" className="bg-slate-50 py-16 md:py-24 scroll-mt-16">
+      <div className="container mx-auto px-4 md:px-8 max-w-8xl">
+        <div className="mx-auto mb-12 max-w-2xl text-center">
+          <p className="text-sm font-medium text-amber-700">Keunggulan Kami</p>
+          <h2 className="mt-2 text-3xl md:text-4xl font-bold text-slate-900">
+            Mengapa Memilih ASM?
           </h2>
+          <p className="mt-3 text-slate-600">
+            Pengalaman, jaringan, dan harga yang kompetitif untuk mendukung
+            pertumbuhan bisnis Anda.
+          </p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
           {features.map((feature) => (
-            <Card key={feature.title} className="bg-white shadow-md">
+            <Card
+              key={feature.title}
+              className="bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow"
+            >
               <CardHeader>
                 <div className="mb-4">{feature.icon}</div>
                 <CardTitle>{feature.title}</CardTitle>
