@@ -1,14 +1,19 @@
+"use client";
+
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "./ui/button";
 import { UserNav } from "./UserNav";
 import { Menu, X } from "lucide-react";
+import { signIn } from "next-auth/react";
+import type { Session } from "next-auth";
 import logoBlack from "@/assets/images/logo.svg";
 import logoWhite from "@/assets/images/logo-white.svg";
 
 interface HeaderProps {
-  isLoggedIn: boolean;
+  // isLoggedIn: boolean;
+  session: Session | null;
 }
 
 const NAV_ITEMS = [
@@ -18,7 +23,7 @@ const NAV_ITEMS = [
   { href: "/#about", label: "Tentang Kami" },
 ];
 
-const Header = ({ isLoggedIn }: HeaderProps) => {
+const Header = ({ session }: HeaderProps) => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -85,11 +90,13 @@ const Header = ({ isLoggedIn }: HeaderProps) => {
 
         <div className="flex items-center gap-3">
           <div className="hidden md:block">
-            {isLoggedIn ? (
-              <UserNav />
+            {session ? (
+              <UserNav user={session.user} />
             ) : (
               <Button
                 className={`${loginButtonClass} transition-all duration-300 rounded-full px-5`}
+                onClick={() => signIn("google")}
+                aria-label="Login dengan Google"
               >
                 Login
               </Button>
@@ -147,10 +154,14 @@ const Header = ({ isLoggedIn }: HeaderProps) => {
             ))}
           </nav>
           <div className="pt-2 border-t border-white/10 md:border-none">
-            {isLoggedIn ? (
-              <UserNav />
+            {session ? (
+              <UserNav user={session.user} />
             ) : (
-              <Button className={`w-full ${loginButtonClass} rounded-full`}>
+              <Button
+                className={`w-full ${loginButtonClass} rounded-full`}
+                onClick={() => signIn("google")}
+                aria-label="Login dengan Google"
+              >
                 Login
               </Button>
             )}

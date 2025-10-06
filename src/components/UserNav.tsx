@@ -1,6 +1,8 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { signOut } from "next-auth/react";
+import type { DefaultSession } from "next-auth";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,33 +13,32 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-// TODO: Ganti data ini dengan data asli dari NextAuth saat sudah terhubung
-const FAKE_USER = {
-  name: "Andy M.",
-  email: "andy.motor@example.com",
-  avatarUrl: "https://github.com/shadcn.png", // Placeholder image
+type Props = {
+  user?: DefaultSession["user"] | null;
 };
 
-export function UserNav() {
+export function UserNav({ user }: Props) {
+  const displayName = user?.name ?? "Pengguna";
+  const displayEmail = user?.email ?? "-";
+  const avatar = user?.image ?? "https://github.com/shadcn.png";
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative h-8 w-8 rounded-full">
           <Avatar className="h-8 w-8">
-            <AvatarImage
-              src={FAKE_USER.avatarUrl}
-              alt={`Avatar of ${FAKE_USER.name}`}
-            />
-            <AvatarFallback>{FAKE_USER.name.charAt(0)}</AvatarFallback>
+            <AvatarImage src={avatar} alt={`Avatar of ${displayName}`} />
+            <AvatarFallback>
+              {displayName?.charAt(0)?.toUpperCase() || "U"}
+            </AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none">{FAKE_USER.name}</p>
+            <p className="text-sm font-medium leading-none">{displayName}</p>
             <p className="text-xs leading-none text-muted-foreground">
-              {FAKE_USER.email}
+              {displayEmail}
             </p>
           </div>
         </DropdownMenuLabel>
@@ -55,8 +56,7 @@ export function UserNav() {
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        {/* TODO: Hubungkan fungsi logout asli di sini */}
-        <DropdownMenuItem>Log out</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => signOut()}>Log out</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

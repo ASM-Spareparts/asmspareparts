@@ -18,6 +18,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import Link from "next/link";
+import type { Session } from "next-auth";
 import {
   Table,
   TableBody,
@@ -29,9 +30,10 @@ import {
 } from "@/components/ui/table";
 
 type PartnerProgramProps = {
-  isLoggedIn: boolean;
+  session: Session | null;
 };
-const PartnerProgramSection = ({ isLoggedIn }: PartnerProgramProps) => {
+const PartnerProgramSection = ({ session }: PartnerProgramProps) => {
+  const isLoggedIn = !!session;
   return (
     <section
       id="partner"
@@ -79,9 +81,15 @@ const PartnerProgramSection = ({ isLoggedIn }: PartnerProgramProps) => {
                   <Link href="/undian-saya">Lihat Undian Saya</Link>
                 </Button>
               ) : (
-                <Button className="inline-flex items-center gap-2">
-                  <Chrome className="h-4 w-4" />
-                  Bergabung dengan Google
+                <Button
+                  asChild
+                  className="inline-flex items-center gap-2"
+                  aria-label="Login dengan Google"
+                >
+                  <a href="/api/auth/signin/google?callbackUrl=/undian-saya">
+                    <Chrome className="h-4 w-4" />
+                    Bergabung dengan Google
+                  </a>
                 </Button>
               )}
               <Dialog>
