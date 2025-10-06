@@ -30,19 +30,27 @@ const AboutSection = () => {
             <div className="backdrop-blur-sm rounded-3xl border border-slate-200/70 bg-white/60 p-8 md:p-12 shadow-sm">
               <div className="prose prose-slate max-w-none text-slate-600 dark:prose-invert">
                 <p>
-                  Berawal dari semangat untuk menyediakan suku cadang
-                  berkualitas dengan akses yang mudah, Andy Sparepart Motor
-                  (ASM) didirikan lebih dari 20 tahun yang lalu. Kami memulai
-                  sebagai distributor sederhana dengan mimpi besar: menjadi
-                  jembatan antara produsen suku cadang terbaik dan setiap
-                  bengkel serta pengendara motor di Indonesia.
-                </p>
-                <p>
-                  Misi kami sederhana: menjadi mitra terbaik yang tidak hanya
-                  menyediakan produk, tetapi juga solusi pertumbuhan bagi bisnis
-                  bengkel dan jaminan kualitas bagi setiap pengendara.
-                  Kepercayaan Anda adalah aset terbesar kami, dan kami terus
-                  berinovasi untuk menjaga standar layanan.
+                  Selama lebih dari 20 tahun, ASM JAYA telah menjadi mitra
+                  terpercaya dalam distribusi sparepart motor OEM berkualitas di
+                  Indonesia. Kami berkomitmen untuk menyediakan berbagai suku
+                  cadang motor yang lengkap, original, dan berstandar
+                  internasional yang mendukung kelancaran dan performa kendaraan
+                  pelanggan kami.
+                  <br />
+                  <br />
+                  Deangan pengalaman sealama lebih dari 2 dekade, ASM JAYA
+                  tumbuh dan berkembang bersama industri otomotif yang dinamis,
+                  dengan fokus pada pelayanan prima, kecepatan distribusi, dan
+                  harga yang kompetitif. Dengan jaringan distribusi yang luas
+                  dan tim profesional yang berpengalaman pada industri
+                  spareparts motor, kami memastikan setiap kebutuhan spareparts
+                  motor dapat terpenuhi dengan cepat dan tepat.
+                  <br />
+                  <br />
+                  Kepercayaan dan kepuasan pelanggan adalah prioritas utama
+                  kami. Kami terus berinovasi dan beradaptasi dengan
+                  perkembangan teknologi untuk menghadirkan solusi terbaik bagi
+                  mitra bisnis dan konsumen kami di seluruh nusantara.
                 </p>
               </div>
             </div>

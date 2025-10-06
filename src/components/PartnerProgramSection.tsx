@@ -102,47 +102,48 @@ const PartnerProgramSection = ({ isLoggedIn }: PartnerProgramProps) => {
                   <div className="mt-2 overflow-x-auto">
                     <Table>
                       <TableCaption className="text-slate-500">
-                        Hadiah dapat berubah sesuai periode promosi. S&K
-                        berlaku.
+                        Program berjalan hingga Juni 2026. S&K berlaku. Benefit
+                        dapat berubah sesuai periode promosi.
                       </TableCaption>
                       <TableHeader>
                         <TableRow>
-                          <TableHead className="w-[200px]">
-                            Minimal Pembelian
-                          </TableHead>
-                          <TableHead>Hadiah Undian yang Mungkin</TableHead>
+                          <TableHead className="w-[260px]">Kriteria</TableHead>
+                          <TableHead className="w-[160px]">Periode</TableHead>
+                          <TableHead>Benefit</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
                         <TableRow>
                           <TableCell className="font-medium">
-                            Rp 100.000+
+                            Setiap belanja Rp 1.000.000
                           </TableCell>
-                          <TableCell>Powerbank atau Aksesoris</TableCell>
+                          <TableCell>Setiap transaksi</TableCell>
+                          <TableCell>1 kupon undian iPhone 13 New</TableCell>
                         </TableRow>
                         <TableRow>
                           <TableCell className="font-medium">
-                            Rp 200.000+
+                            Akumulasi belanja Rp 70.000.000
                           </TableCell>
-                          <TableCell>Voucher Belanja Rp 100.000</TableCell>
+                          <TableCell>Per bulan</TableCell>
+                          <TableCell>
+                            iPhone 13 New (atau konversi ke emas)
+                          </TableCell>
                         </TableRow>
                         <TableRow>
                           <TableCell className="font-medium">
-                            Rp 500.000+
+                            Akumulasi belanja Rp 40.000.000
                           </TableCell>
-                          <TableCell>Smartphone (kategori tertentu)</TableCell>
+                          <TableCell>Per bulan</TableCell>
+                          <TableCell>Emas 24K 1 gram</TableCell>
                         </TableRow>
                         <TableRow>
                           <TableCell className="font-medium">
-                            Rp 1.000.000+
+                            Akumulasi belanja Rp 300.000.000
                           </TableCell>
-                          <TableCell>Emas 10 gram</TableCell>
-                        </TableRow>
-                        <TableRow>
-                          <TableCell className="font-medium">
-                            Rp 2.000.000+
+                          <TableCell>Hingga Juni 2026</TableCell>
+                          <TableCell>
+                            Tiket undian All New Yamaha NMAX
                           </TableCell>
-                          <TableCell>Motor Matic</TableCell>
                         </TableRow>
                       </TableBody>
                     </Table>
