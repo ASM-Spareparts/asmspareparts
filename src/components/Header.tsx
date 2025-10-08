@@ -12,7 +12,6 @@ import logoBlack from "@/assets/images/logo.svg";
 import logoWhite from "@/assets/images/logo-white.svg";
 
 interface HeaderProps {
-  // isLoggedIn: boolean;
   session: Session | null;
 }
 

@@ -28,7 +28,7 @@ const HeroSection = () => {
           asChild
         >
           <a
-            href="https://wa.me/6281234567890?text=Halo%20ASM,%20saya%20tertarik%20dengan%20katalog%20produk%20Anda."
+            href="https://wa.me/6287842812082"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Minta katalog via WhatsApp"

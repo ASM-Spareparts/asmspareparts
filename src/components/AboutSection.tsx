@@ -110,7 +110,7 @@ const AboutSection = () => {
                   asChild
                 >
                   <a
-                    href="https://wa.me/6281234567890?text=Halo%20ASM,%20saya%20ingin%20tahu%20lebih%20lanjut."
+                    href="https://wa.me/6287842812082"
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label="Hubungi ASM via WhatsApp"

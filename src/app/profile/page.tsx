@@ -3,9 +3,27 @@
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 import DashboardLayout from "@/components/DashboardLayout";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter as DialogFooterUI,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 export default function ProfilePage() {
   const { data: session } = useSession();
@@ -14,12 +32,17 @@ export default function ProfilePage() {
   const [nomorTelepon, setNomorTelepon] = useState<string>("");
   const [alamat, setAlamat] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
+  const [fetching, setFetching] = useState<boolean>(true);
   const [message, setMessage] = useState<string>("");
+  const [confirmOpen, setConfirmOpen] = useState<boolean>(false);
 
   const handleDeleteAccount = () => {
-    // Placeholder action: clear the email to simulate unlink
+    // Placeholder action after confirmation: clear the email to simulate unlink
     setEmail("");
-    alert("Akun berhasil dihapus (simulasi). Hubungkan API untuk produksi.");
+    setConfirmOpen(false);
+    toast.info(
+      "Akun berhasil dihapus (simulasi). Hubungkan API untuk produksi."
+    );
   };
 
   const handleSave = async () => {
@@ -38,8 +61,10 @@ export default function ProfilePage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data?.error || "Gagal menyimpan profil");
       setMessage("Profil berhasil disimpan.");
+      toast.success("Profil berhasil disimpan.");
     } catch (err: any) {
       setMessage(err.message || "Terjadi kesalahan saat menyimpan.");
+      toast.error(err.message || "Terjadi kesalahan saat menyimpan.");
     } finally {
       setLoading(false);
     }
@@ -56,6 +81,7 @@ export default function ProfilePage() {
     let ignore = false;
     (async () => {
       try {
+        setFetching(true);
         const res = await fetch("/api/profile");
         const data = await res.json();
         if (!ignore && data?.profile) {
@@ -68,6 +94,8 @@ export default function ProfilePage() {
         }
       } catch {
         // ignore fetch errors
+      } finally {
+        if (!ignore) setFetching(false);
       }
     })();
     return () => {
@@ -81,67 +109,117 @@ export default function ProfilePage() {
       description="Kelola informasi akun Anda."
     >
       <div className="space-y-6 text-slate-700">
-        <div className="grid gap-6 sm:grid-cols-2">
-          <div className="grid gap-2 sm:col-span-1">
-            <Label htmlFor="nama">Nama Lengkap</Label>
-            <Input
-              id="nama"
-              placeholder="Masukkan nama lengkap"
-              value={namaLengkap}
-              onChange={(e) => setNamaLengkap(e.target.value)}
-            />
-          </div>
-          <div className="grid gap-2 sm:col-span-1">
-            <div className="flex items-center justify-between">
-              <Label htmlFor="email">Email</Label>
-              <span className="text-xs text-slate-500">
-                Terkait Google • terkunci
-              </span>
+        <Card>
+          <CardHeader>
+            <CardTitle>Informasi Profil</CardTitle>
+            <CardDescription>
+              {fetching ? "Memuat profil..." : "Kelola informasi akun Anda."}
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid gap-6 sm:grid-cols-2">
+              <div className="grid gap-2 sm:col-span-1">
+                <Label htmlFor="nama">Nama Lengkap</Label>
+                <Input
+                  id="nama"
+                  placeholder="Masukkan nama lengkap"
+                  value={namaLengkap}
+                  onChange={(e) => setNamaLengkap(e.target.value)}
+                  disabled={fetching || loading}
+                />
+              </div>
+              <div className="grid gap-2 sm:col-span-1">
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="email">Email</Label>
+                  <span className="text-xs text-slate-500">
+                    Terkait Google • terkunci
+                  </span>
+                </div>
+                <Input
+                  id="email"
+                  type="email"
+                  value={email}
+                  readOnly
+                  disabled
+                  className="bg-slate-50"
+                />
+              </div>
+              <div className="grid gap-2 sm:col-span-1">
+                <Label htmlFor="telepon">Nomor Telepon</Label>
+                <Input
+                  id="telepon"
+                  type="tel"
+                  placeholder="08xxxxxxxxxx"
+                  value={nomorTelepon}
+                  onChange={(e) => setNomorTelepon(e.target.value)}
+                  disabled={fetching || loading}
+                />
+              </div>
+              <div className="grid gap-2 sm:col-span-1">
+                <Label htmlFor="alamat">Alamat</Label>
+                <Input
+                  id="alamat"
+                  placeholder="Nama jalan, kecamatan, kota"
+                  value={alamat}
+                  onChange={(e) => setAlamat(e.target.value)}
+                  disabled={fetching || loading}
+                />
+              </div>
             </div>
-            <Input
-              id="email"
-              type="email"
-              value={email}
-              readOnly
-              disabled
-              className="bg-slate-50"
-            />
-          </div>
-          <div className="grid gap-2 sm:col-span-1">
-            <Label htmlFor="telepon">Nomor Telepon</Label>
-            <Input
-              id="telepon"
-              type="tel"
-              placeholder="08xxxxxxxxxx"
-              value={nomorTelepon}
-              onChange={(e) => setNomorTelepon(e.target.value)}
-            />
-          </div>
-          <div className="grid gap-2 sm:col-span-1">
-            <Label htmlFor="alamat">Alamat</Label>
-            <Input
-              id="alamat"
-              placeholder="Nama jalan, kecamatan, kota"
-              value={alamat}
-              onChange={(e) => setAlamat(e.target.value)}
-            />
-          </div>
-        </div>
+          </CardContent>
+          <CardFooter className="flex flex-col sm:flex-row gap-3 sm:justify-between sm:items-center">
+            <div className="text-sm h-6 text-slate-600">{message}</div>
+            <Button
+              onClick={handleSave}
+              className="sm:w-auto"
+              disabled={loading || fetching}
+            >
+              {loading ? "Menyimpan..." : "Simpan Perubahan"}
+            </Button>
+          </CardFooter>
+        </Card>
 
-        <div className="flex flex-col sm:flex-row gap-3 pt-2 sm:justify-between sm:items-center">
-          <div className="text-sm h-6 text-slate-600">{message}</div>
-          <Button onClick={handleSave} className="sm:w-auto" disabled={loading}>
-            {loading ? "Menyimpan..." : "Simpan Perubahan"}
-          </Button>
-          <Button
-            variant="destructive"
-            onClick={handleDeleteAccount}
-            disabled={!email}
-            className="sm:w-auto"
-          >
-            Hapus Akun
-          </Button>
-        </div>
+        <Card>
+          <CardHeader>
+            <CardTitle>Hapus Akun</CardTitle>
+            <CardDescription>
+              Tindakan ini permanen dan tidak dapat dibatalkan.
+            </CardDescription>
+          </CardHeader>
+          <CardFooter>
+            <Dialog open={confirmOpen} onOpenChange={setConfirmOpen}>
+              <DialogTrigger asChild>
+                <Button
+                  variant="destructive"
+                  disabled={!email}
+                  className="sm:w-auto"
+                >
+                  Hapus Akun
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Hapus akun?</DialogTitle>
+                  <DialogDescription>
+                    Tindakan ini akan menghapus akun Anda beserta data profil
+                    yang terkait. Proses ini tidak dapat dibatalkan.
+                  </DialogDescription>
+                </DialogHeader>
+                <DialogFooterUI className="gap-2">
+                  <Button
+                    variant="outline"
+                    onClick={() => setConfirmOpen(false)}
+                  >
+                    Batal
+                  </Button>
+                  <Button variant="destructive" onClick={handleDeleteAccount}>
+                    Ya, hapus akun
+                  </Button>
+                </DialogFooterUI>
+              </DialogContent>
+            </Dialog>
+          </CardFooter>
+        </Card>
       </div>
     </DashboardLayout>
   );

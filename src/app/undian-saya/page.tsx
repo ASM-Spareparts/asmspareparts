@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -12,35 +12,77 @@ type Coupon = {
   status: "aktif" | "digunakan" | "kedaluwarsa";
 };
 
-const prizeBySpend = (code: string): string => {
-  const clean = code.trim().toUpperCase();
-  if (clean.includes("2M") || clean.includes("2000000")) return "Motor Matic";
-  if (clean.includes("1M") || clean.includes("1000000")) return "Emas 10 gram";
-  if (clean.includes("500K") || clean.includes("500000")) return "Smartphone";
-  if (clean.includes("200K") || clean.includes("200000")) return "Voucher 100K";
-  if (clean.includes("100K") || clean.includes("100000"))
-    return "Aksesoris/Powerbank";
-  return "Hadiah Hiburan";
-};
-
 export default function UndianSayaPage() {
   const [code, setCode] = useState("");
   const [coupons, setCoupons] = useState<Coupon[]>([]);
+  const [submitting, setSubmitting] = useState(false);
+  const [message, setMessage] = useState<string | null>(null);
+  const [cooldownUntil, setCooldownUntil] = useState<number>(0);
+  const [loading, setLoading] = useState<boolean>(true);
 
-  const probablePrize = useMemo(() => (code ? prizeBySpend(code) : ""), [code]);
+  useEffect(() => {
+    let ignore = false;
+    (async () => {
+      try {
+        setLoading(true);
+        const res = await fetch("/api/lottery-codes/mine");
+        const data = await res.json().catch(() => ({}));
+        if (!ignore && Array.isArray(data?.codes)) {
+          const mapped: Coupon[] = data.codes.map((row: any) => ({
+            code: String(row.code),
+            prize: row?.prize?.description || "",
+            status: "aktif",
+          }));
+          setCoupons(mapped);
+        }
+      } finally {
+        if (!ignore) setLoading(false);
+      }
+    })();
+    return () => {
+      ignore = true;
+    };
+  }, []);
 
-  const addCode = () => {
+  const addCode = async () => {
     const trimmed = code.trim();
     if (!trimmed) return;
-    setCoupons((prev) => [
-      {
-        code: trimmed.toUpperCase(),
-        prize: prizeBySpend(trimmed),
-        status: "aktif",
-      },
-      ...prev,
-    ]);
-    setCode("");
+    const now = Date.now();
+    if (now < cooldownUntil) {
+      setMessage("Terlalu banyak percobaan. Coba lagi sebentar.");
+      return;
+    }
+    setSubmitting(true);
+    setMessage(null);
+    try {
+      const res = await fetch("/api/lottery-codes/claim", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code: trimmed }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (res.ok && data?.success) {
+        setCoupons((prev) => [
+          {
+            code: String(data.code),
+            prize: data?.prize?.description || "",
+            status: "aktif",
+          },
+          ...prev,
+        ]);
+        setCode("");
+        setMessage("Kode berhasil diklaim.");
+      } else {
+        // common errors: 400 invalid, 404 not found, 409 claimed, 429 rate limit
+        setMessage(
+          typeof data?.error === "string" ? data.error : "Gagal mengklaim kode."
+        );
+        // apply small client cooldown for brute-force protection UI-side (server enforces too)
+        setCooldownUntil(Date.now() + 3000);
+      }
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -57,22 +99,19 @@ export default function UndianSayaPage() {
               placeholder="Masukkan kode (contoh: ASM-500K-XYZ)"
               className="flex-1"
             />
-            <Button onClick={addCode} disabled={!code.trim()}>
+            <Button onClick={addCode} disabled={!code.trim() || submitting}>
               Tambahkan
             </Button>
           </div>
-          {probablePrize && (
-            <p className="mt-3 text-sm text-slate-600">
-              Perkiraan hadiah:{" "}
-              <span className="font-medium text-slate-900">
-                {probablePrize}
-              </span>
-            </p>
-          )}
+          {message && <p className="mt-3 text-sm text-slate-600">{message}</p>}
         </CardContent>
       </Card>
 
-      {coupons.length === 0 ? (
+      {loading ? (
+        <div className="rounded-xl border border-slate-200 p-6 text-slate-700 bg-white">
+          Memuat...
+        </div>
+      ) : coupons.length === 0 ? (
         <div className="rounded-xl border border-slate-200 p-6 text-slate-700 bg-white">
           <p className="mb-2">
             Belum ada kupon. Masukkan kode di atas untuk menambah kupon.
