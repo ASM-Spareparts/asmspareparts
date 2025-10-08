@@ -15,7 +15,7 @@ export default async function Home() {
       <Header session={session} />
       <main id="app-scroll" className="flex-grow overflow-y-auto scroll-smooth">
         <HeroSection />
-        <PartnerProgramSection session={session} />
+        <PartnerProgramSection />
         <FeaturesSection />
         <AboutSection />
         <Footer />

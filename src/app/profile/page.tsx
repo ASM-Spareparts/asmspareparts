@@ -62,9 +62,13 @@ export default function ProfilePage() {
       if (!res.ok) throw new Error(data?.error || "Gagal menyimpan profil");
       setMessage("Profil berhasil disimpan.");
       toast.success("Profil berhasil disimpan.");
-    } catch (err: any) {
-      setMessage(err.message || "Terjadi kesalahan saat menyimpan.");
-      toast.error(err.message || "Terjadi kesalahan saat menyimpan.");
+    } catch (err: unknown) {
+      const msg =
+        err instanceof Error
+          ? err.message
+          : "Terjadi kesalahan saat menyimpan.";
+      setMessage(msg);
+      toast.error(msg);
     } finally {
       setLoading(false);
     }
@@ -85,7 +89,12 @@ export default function ProfilePage() {
         const res = await fetch("/api/profile");
         const data = await res.json();
         if (!ignore && data?.profile) {
-          const p = data.profile as any;
+          const p: Partial<{
+            email: string;
+            full_name: string;
+            phone_number: string;
+            address: string;
+          }> = data.profile;
           if (typeof p.email === "string") setEmail(p.email);
           if (typeof p.full_name === "string") setNamaLengkap(p.full_name);
           if (typeof p.phone_number === "string")

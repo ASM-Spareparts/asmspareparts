@@ -1,3 +1,7 @@
+"use client";
+
+import Link from "next/link";
+import { useSession } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -17,8 +21,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import Link from "next/link";
-import type { Session } from "next-auth";
 import {
   Table,
   TableBody,
@@ -29,11 +31,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-type PartnerProgramProps = {
-  session: Session | null;
-};
-const PartnerProgramSection = ({ session }: PartnerProgramProps) => {
-  const isLoggedIn = !!session;
+export default function PartnerProgramSection() {
+  const { data: session } = useSession();
+  const isLoggedIn = Boolean(session?.user);
+
   return (
     <section
       id="partner"
@@ -41,7 +42,7 @@ const PartnerProgramSection = ({ session }: PartnerProgramProps) => {
     >
       <div className="container mx-auto px-4 md:px-8 max-w-8xl">
         <div className="grid md:grid-cols-2 gap-12 items-center">
-          {/* Left: Placeholder for 3D render / image */}
+          {/* Left: Visual */}
           <div className="w-full">
             <div className="aspect-video w-full overflow-hidden rounded-2xl border border-slate-200 shadow-sm">
               <Image
@@ -86,10 +87,10 @@ const PartnerProgramSection = ({ session }: PartnerProgramProps) => {
                   className="inline-flex items-center gap-2"
                   aria-label="Login dengan Google"
                 >
-                  <a href="/api/auth/signin/google?callbackUrl=/undian-saya">
+                  <Link href="/api/auth/signin/google?callbackUrl=/undian-saya">
                     <Chrome className="h-4 w-4" />
                     Bergabung dengan Google
-                  </a>
+                  </Link>
                 </Button>
               )}
               <Dialog>
@@ -110,8 +111,8 @@ const PartnerProgramSection = ({ session }: PartnerProgramProps) => {
                   <div className="mt-2 overflow-x-auto">
                     <Table>
                       <TableCaption className="text-slate-500">
-                        Program berjalan hingga Juni 2026. S&K berlaku. Benefit
-                        dapat berubah sesuai periode promosi.
+                        Program berjalan hingga Juni 2026. S&amp;K berlaku.
+                        Benefit dapat berubah sesuai periode promosi.
                       </TableCaption>
                       <TableHeader>
                         <TableRow>
@@ -164,6 +165,4 @@ const PartnerProgramSection = ({ session }: PartnerProgramProps) => {
       </div>
     </section>
   );
-};
-
-export default PartnerProgramSection;
+}

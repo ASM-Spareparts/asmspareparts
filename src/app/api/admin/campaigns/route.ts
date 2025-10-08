@@ -35,14 +35,22 @@ export async function GET() {
     return NextResponse.json({ campaigns: data });
 }
 
+type CampaignPayload = {
+    name: string;
+    start_date?: string | null;
+    end_date?: string | null;
+    raffle_date?: string | null;
+    is_active?: boolean;
+};
+
 export async function POST(req: Request) {
     const session = await requireAdminOr401();
     if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     const { SUPABASE_URL, SERVICE_ROLE } = getEnv();
     if (!SUPABASE_URL || !SERVICE_ROLE) return NextResponse.json({ error: "Server misconfigured" }, { status: 500 });
 
-    const body = await req.json().catch(() => ({}));
-    const { name, start_date, end_date, raffle_date, is_active } = body as any;
+    const body = (await req.json().catch(() => ({}))) as Partial<CampaignPayload>;
+    const { name, start_date, end_date, raffle_date, is_active } = body;
     if (!name || typeof name !== "string") return NextResponse.json({ error: "Invalid name" }, { status: 400 });
 
     const payload = [{ name, start_date, end_date, raffle_date, is_active: !!is_active }];
@@ -70,11 +78,11 @@ export async function PATCH(req: Request) {
     const { SUPABASE_URL, SERVICE_ROLE } = getEnv();
     if (!SUPABASE_URL || !SERVICE_ROLE) return NextResponse.json({ error: "Server misconfigured" }, { status: 500 });
 
-    const body = await req.json().catch(() => ({}));
-    const { id, name, start_date, end_date, raffle_date, is_active } = body as any;
+    const body = (await req.json().catch(() => ({}))) as Partial<CampaignPayload> & { id?: number };
+    const { id, name, start_date, end_date, raffle_date, is_active } = body;
     if (!id) return NextResponse.json({ error: "Missing id" }, { status: 400 });
 
-    const update: Record<string, any> = {};
+    const update: Record<string, unknown> = {};
     if (typeof name !== "undefined") update.name = name;
     if (typeof start_date !== "undefined") update.start_date = start_date;
     if (typeof end_date !== "undefined") update.end_date = end_date;

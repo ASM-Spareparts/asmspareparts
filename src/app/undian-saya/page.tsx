@@ -26,9 +26,14 @@ export default function UndianSayaPage() {
       try {
         setLoading(true);
         const res = await fetch("/api/lottery-codes/mine");
-        const data = await res.json().catch(() => ({}));
+        const data = (await res.json().catch(() => ({}))) as {
+          codes?: Array<{
+            code: string;
+            prize?: { description?: string } | null;
+          }>;
+        };
         if (!ignore && Array.isArray(data?.codes)) {
-          const mapped: Coupon[] = data.codes.map((row: any) => ({
+          const mapped: Coupon[] = data.codes.map((row) => ({
             code: String(row.code),
             prize: row?.prize?.description || "",
             status: "aktif",

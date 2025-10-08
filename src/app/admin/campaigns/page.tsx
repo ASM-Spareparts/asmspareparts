@@ -1,5 +1,3 @@
-import dynamic from "next/dynamic";
-
 import CampaignsSection from "../components/CampaignsSection";
 
 export default function CampaignsPage() {

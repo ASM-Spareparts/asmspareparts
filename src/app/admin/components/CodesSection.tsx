@@ -39,6 +39,18 @@ type Prize = {
   quantity: number;
 };
 
+type EnrichedCode = {
+  id: number;
+  created_at: string;
+  code: string;
+  campaign_id: number;
+  prize_id: number;
+  user_id: string | null;
+  campaign: { id: number; name: string } | null;
+  prize: { id: number; description: string; rank: number } | null;
+  user: { id: string; email: string | null; name: string | null } | null;
+};
+
 export default function CodesSection() {
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [prizes, setPrizes] = useState<Prize[]>([]);
@@ -46,7 +58,7 @@ export default function CodesSection() {
   const [selectedPrizeId, setSelectedPrizeId] = useState<number | "">("");
   const [codeCount, setCodeCount] = useState(10);
 
-  const [codes, setCodes] = useState<Array<any>>([]);
+  const [codes, setCodes] = useState<EnrichedCode[]>([]);
   const [codesLoading, setCodesLoading] = useState(false);
   const [codesOffset, setCodesOffset] = useState(0);
   const codesLimit = 50;
@@ -116,7 +128,9 @@ export default function CodesSection() {
       );
       const data = await res.json();
       if (res.ok) {
-        setCodes(data?.codes || []);
+        setCodes(
+          Array.isArray(data?.codes) ? (data.codes as EnrichedCode[]) : []
+        );
         setCodesOffset(offset);
       }
     } finally {
@@ -275,7 +289,7 @@ export default function CodesSection() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {codes.map((row: any) => (
+                {codes.map((row) => (
                   <TableRow key={row.id}>
                     <TableCell>#{row.id}</TableCell>
                     <TableCell className="font-mono">

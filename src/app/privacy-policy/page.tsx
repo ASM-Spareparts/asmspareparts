@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function PrivacyPolicyPage() {
   return (
     <main className="min-h-screen bg-white py-16">
@@ -56,16 +58,17 @@ export default function PrivacyPolicyPage() {
               <p>
                 <strong>Afiliasi</strong> berarti entitas yang mengendalikan,
                 dikendalikan oleh, atau berada di bawah kendali bersama dengan
-                suatu pihak, di mana "kendali" berarti kepemilikan 50% atau
-                lebih atas saham, kepentingan ekuitas, atau sekuritas lain yang
-                berhak untuk memilih direktur atau otoritas pengelola lainnya.
+                suatu pihak, di mana &quot;kendali&quot; berarti kepemilikan 50%
+                atau lebih atas saham, kepentingan ekuitas, atau sekuritas lain
+                yang berhak untuk memilih direktur atau otoritas pengelola
+                lainnya.
               </p>
             </li>
             <li>
               <p>
-                <strong>Perusahaan</strong> (disebut juga "kami", "kita", atau
-                "milik kami" dalam Perjanjian ini) mengacu pada CV ASM Jaya,
-                Cluster Rancamanyar, F10.
+                <strong>Perusahaan</strong> (disebut juga &quot;kami&quot;,
+                &quot;kita&quot;, atau &quot;milik kami&quot; dalam Perjanjian
+                ini) mengacu pada CV ASM Jaya, Cluster Rancamanyar, F10.
               </p>
             </li>
             <li>
@@ -231,10 +234,11 @@ export default function PrivacyPolicyPage() {
             </li>
           </ul>
           <p>
-            Cookie dapat berupa "Persisten" atau "Sesi". Cookie Persisten tetap
-            berada di komputer atau perangkat seluler Anda saat offline,
-            sedangkan Cookie Sesi akan dihapus segera setelah Anda menutup
-            peramban. Anda dapat mempelajari lebih lanjut tentang cookie di{" "}
+            Cookie dapat berupa &quot;Persisten&quot; atau &quot;Sesi&quot;.
+            Cookie Persisten tetap berada di komputer atau perangkat seluler
+            Anda saat offline, sedangkan Cookie Sesi akan dihapus segera setelah
+            Anda menutup peramban. Anda dapat mempelajari lebih lanjut tentang
+            cookie di{" "}
             <a
               href="https://www.termsfeed.com/blog/cookies/#What_Are_Cookies"
               target="_blank"
@@ -544,8 +548,8 @@ export default function PrivacyPolicyPage() {
           <p>
             Kami akan memberi tahu Anda melalui email dan/atau pemberitahuan
             yang mencolok pada Layanan kami sebelum perubahan berlaku dan
-            memperbarui tanggal "Terakhir diperbarui" di bagian atas Kebijakan
-            Privasi ini.
+            memperbarui tanggal &quot;Terakhir diperbarui&quot; di bagian atas
+            Kebijakan Privasi ini.
           </p>
           <p>
             Anda disarankan untuk meninjau Kebijakan Privasi ini secara berkala
@@ -572,9 +576,9 @@ export default function PrivacyPolicyPage() {
           </ul>
         </div>
         <div className="mt-10">
-          <a href="/" className="text-sm text-emerald-700 hover:underline">
+          <Link href="/" className="text-sm text-emerald-700 hover:underline">
             ← Kembali ke Beranda
-          </a>
+          </Link>
         </div>
       </div>
     </main>

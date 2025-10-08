@@ -37,14 +37,21 @@ export async function GET(req: Request) {
     return NextResponse.json({ prizes: data });
 }
 
+type PrizePayload = {
+    campaign_id: number;
+    rank: number;
+    description: string;
+    quantity: number;
+};
+
 export async function POST(req: Request) {
     const session = await requireAdminOr401();
     if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     const { SUPABASE_URL, SERVICE_ROLE } = getEnv();
     if (!SUPABASE_URL || !SERVICE_ROLE) return NextResponse.json({ error: "Server misconfigured" }, { status: 500 });
 
-    const body = await req.json().catch(() => ({}));
-    const { campaign_id, rank, description, quantity } = body as any;
+    const body = (await req.json().catch(() => ({}))) as Partial<PrizePayload>;
+    const { campaign_id, rank, description, quantity } = body;
     if (!campaign_id || !rank || !description || !quantity) {
         return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
     }
@@ -73,11 +80,11 @@ export async function PATCH(req: Request) {
     const { SUPABASE_URL, SERVICE_ROLE } = getEnv();
     if (!SUPABASE_URL || !SERVICE_ROLE) return NextResponse.json({ error: "Server misconfigured" }, { status: 500 });
 
-    const body = await req.json().catch(() => ({}));
-    const { id, campaign_id, rank, description, quantity } = body as any;
+    const body = (await req.json().catch(() => ({}))) as Partial<PrizePayload> & { id?: number };
+    const { id, campaign_id, rank, description, quantity } = body;
     if (!id) return NextResponse.json({ error: "Missing id" }, { status: 400 });
 
-    const update: Record<string, any> = {};
+    const update: Record<string, unknown> = {};
     if (typeof campaign_id !== "undefined") update.campaign_id = campaign_id;
     if (typeof rank !== "undefined") update.rank = rank;
     if (typeof description !== "undefined") update.description = description;

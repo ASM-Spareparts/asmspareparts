@@ -1,3 +1,4 @@
+import Link from "next/link";
 export default function TermsPage() {
   return (
     <main className="min-h-screen bg-white py-16">
@@ -11,8 +12,9 @@ export default function TermsPage() {
         <div className="mt-8 space-y-6 text-slate-700 leading-relaxed">
           <p>
             Dengan mengakses atau menggunakan situs dan layanan ASM Spareparts
-            ("Layanan"), Anda menyetujui untuk terikat pada Syarat & Ketentuan
-            ini. Jika Anda tidak setuju, mohon untuk tidak menggunakan Layanan.
+            (&quot;Layanan&quot;), Anda menyetujui untuk terikat pada Syarat &
+            Ketentuan ini. Jika Anda tidak setuju, mohon untuk tidak menggunakan
+            Layanan.
           </p>
 
           <h2 className="mt-10 text-2xl font-semibold text-slate-900">
@@ -165,9 +167,9 @@ export default function TermsPage() {
             Penafian & Batasan Tanggung Jawab
           </h2>
           <p>
-            Layanan disediakan "sebagaimana adanya" tanpa jaminan apa pun,
-            tersurat maupun tersirat. Sejauh diizinkan oleh hukum, kami tidak
-            bertanggung jawab atas kerugian langsung, tidak langsung,
+            Layanan disediakan &quot;sebagaimana adanya&quot; tanpa jaminan apa
+            pun, tersurat maupun tersirat. Sejauh diizinkan oleh hukum, kami
+            tidak bertanggung jawab atas kerugian langsung, tidak langsung,
             insidental, atau konsekuensial yang timbul dari penggunaan atau
             ketidakmampuan menggunakan Layanan.
           </p>
@@ -206,9 +208,9 @@ export default function TermsPage() {
           </p>
         </div>
         <div className="mt-10">
-          <a href="/" className="text-sm text-emerald-700 hover:underline">
+          <Link href="/" className="text-sm text-emerald-700 hover:underline">
             ← Kembali ke Beranda
-          </a>
+          </Link>
         </div>
       </div>
     </main>

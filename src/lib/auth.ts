@@ -16,7 +16,6 @@ if (SUPABASE_URL && SUPABASE_SERVICE_ROLE_KEY) {
     }) as Adapter;
 } else {
     if (process.env.NODE_ENV !== "production") {
-        // eslint-disable-next-line no-console
         console.warn(
             "Supabase Adapter not configured: set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in .env.local to enable persistence. Falling back to JWT-only sessions."
         );
@@ -57,7 +56,7 @@ export const authOptions: NextAuthOptions = {
                     },
                     body: JSON.stringify({
                         id: user.id,
-                        full_name: (user as any)?.name ?? null,
+                        full_name: (user?.name as string | null) ?? null,
                         address: null,
                         phone_number: null,
                     }),

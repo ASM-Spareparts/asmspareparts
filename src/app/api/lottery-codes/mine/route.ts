@@ -65,18 +65,18 @@ export async function GET() {
     const prizesMap = new Map<number, { id: number; description: string; rank: number }>();
 
     if (campaignIds.length) {
-        const c = await fetchJSON(
+        const c = (await fetchJSON(
             `${SUPABASE_URL}/rest/v1/campaigns?select=id,name&id=in.(${campaignIds.join(",")})`
-        );
+        )) as Array<{ id: number; name: string }> | null;
         if (Array.isArray(c))
-            c.forEach((x: any) => campaignsMap.set(Number(x.id), { id: Number(x.id), name: x.name }));
+            c.forEach((x) => campaignsMap.set(Number(x.id), { id: Number(x.id), name: x.name }));
     }
     if (prizeIds.length) {
-        const p = await fetchJSON(
+        const p = (await fetchJSON(
             `${SUPABASE_URL}/rest/v1/prizes?select=id,description,rank&id=in.(${prizeIds.join(",")})`
-        );
+        )) as Array<{ id: number; description: string; rank: number }> | null;
         if (Array.isArray(p))
-            p.forEach((x: any) =>
+            p.forEach((x) =>
                 prizesMap.set(Number(x.id), {
                     id: Number(x.id),
                     description: x.description,

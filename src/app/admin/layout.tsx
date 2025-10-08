@@ -75,16 +75,21 @@ export default async function AdminLayout({
         <header className="sticky top-0 z-10 bg-white/80 backdrop-blur border-b">
           <div className="container mx-auto px-4 py-4 flex items-center justify-between">
             <div className="flex items-center gap-3 md:hidden">
-              <img
-                src="/assets/images/logo.svg"
+              <Image
+                src={logoBlack}
                 alt="ASM"
+                width={96}
+                height={32}
                 className="h-8 w-auto"
               />
               <span className="font-semibold">Admin Dashboard</span>
             </div>
-            <a href="/" className="text-sm text-slate-600 hover:text-slate-900">
+            <Link
+              href="/"
+              className="text-sm text-slate-600 hover:text-slate-900"
+            >
               Kembali ke Beranda
-            </a>
+            </Link>
           </div>
         </header>
         <div className="container mx-auto px-4 py-8">{children}</div>

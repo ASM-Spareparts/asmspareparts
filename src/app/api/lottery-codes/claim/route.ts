@@ -119,17 +119,17 @@ export async function POST(req: Request) {
         const text = await r2.text();
         return NextResponse.json({ error: text }, { status: 500 });
     }
-    const updated = (await r2.json()) as Array<any>;
-    if (!Array.isArray(updated) || updated.length === 0) {
-        // Someone else claimed it first
-        return NextResponse.json({ error: "Kode sudah digunakan" }, { status: 409 });
-    }
-    const claimed = updated[0] as {
+    const updated = (await r2.json()) as Array<{
         id: number;
         code: string;
         campaign_id: number;
         prize_id: number;
-    };
+    }>;
+    if (!Array.isArray(updated) || updated.length === 0) {
+        // Someone else claimed it first
+        return NextResponse.json({ error: "Kode sudah digunakan" }, { status: 409 });
+    }
+    const claimed = updated[0];
 
     // 4) Enrich prize and campaign for nicer UX
     let prize: { id: number; description: string; rank: number } | null = null;

@@ -1,5 +1,3 @@
-import dynamic from "next/dynamic";
-
 import CodesSection from "../components/CodesSection";
 
 export default function CodesPage() {

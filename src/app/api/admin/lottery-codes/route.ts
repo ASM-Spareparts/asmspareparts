@@ -127,26 +127,26 @@ export async function GET(req: Request) {
     const usersMap = new Map<string, { id: string; email: string | null; name: string | null }>();
 
     if (campaignIds.length) {
-        const c = await fetchJSON(
+        const c = (await fetchJSON(
             `${SUPABASE_URL}/rest/v1/campaigns?select=id,name&id=in.(${campaignIds.join(",")})`
-        );
-        if (Array.isArray(c)) c.forEach((x: any) => campaignsMap.set(Number(x.id), { id: Number(x.id), name: x.name }));
+        )) as Array<{ id: number; name: string }> | null;
+        if (Array.isArray(c)) c.forEach((x) => campaignsMap.set(Number(x.id), { id: Number(x.id), name: x.name }));
     }
     if (prizeIds.length) {
-        const p = await fetchJSON(
+        const p = (await fetchJSON(
             `${SUPABASE_URL}/rest/v1/prizes?select=id,description,rank&id=in.(${prizeIds.join(",")})`
-        );
+        )) as Array<{ id: number; description: string; rank: number }> | null;
         if (Array.isArray(p))
-            p.forEach((x: any) => prizesMap.set(Number(x.id), { id: Number(x.id), description: x.description, rank: Number(x.rank) }));
+            p.forEach((x) => prizesMap.set(Number(x.id), { id: Number(x.id), description: x.description, rank: Number(x.rank) }));
     }
     // next_auth users may not be exposed; try and ignore failure gracefully
     if (userIds.length) {
-        const u = await fetchJSON(
+        const u = (await fetchJSON(
             `${SUPABASE_URL}/rest/v1/next_auth_users?select=id,email,name&id=in.(${userIds
                 .map((id) => `"${id}"`)
                 .join(",")})`
-        );
-        if (Array.isArray(u)) u.forEach((x: any) => usersMap.set(String(x.id), { id: String(x.id), email: x.email ?? null, name: x.name ?? null }));
+        )) as Array<{ id: string; email: string | null; name: string | null }> | null;
+        if (Array.isArray(u)) u.forEach((x) => usersMap.set(String(x.id), { id: String(x.id), email: x.email ?? null, name: x.name ?? null }));
     }
 
     const enriched = codes.map((c) => ({
