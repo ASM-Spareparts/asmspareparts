@@ -93,6 +93,7 @@ User:
 - `POST /api/lottery-codes/claim` – Klaim kode (validasi + atomic update)
 - `GET /api/profile` – Ambil profil
 - `PATCH /api/profile` – Update profil (full_name, address, phone_number)
+- `DELETE /api/profile` – Hapus akun beserta kode undian, profil, akun OAuth (accounts), dan entri user auth
 
 Catatan: Authentication guard & authorization perlu dipastikan di production (misal: memeriksa role admin) – implementasi lanjutan bisa ditambahkan.
 

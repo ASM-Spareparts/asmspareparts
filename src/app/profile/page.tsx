@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import DashboardLayout from "@/components/DashboardLayout";
@@ -36,13 +36,28 @@ export default function ProfilePage() {
   const [message, setMessage] = useState<string>("");
   const [confirmOpen, setConfirmOpen] = useState<boolean>(false);
 
-  const handleDeleteAccount = () => {
-    // Placeholder action after confirmation: clear the email to simulate unlink
-    setEmail("");
-    setConfirmOpen(false);
-    toast.info(
-      "Akun berhasil dihapus (simulasi). Hubungkan API untuk produksi."
-    );
+  const handleDeleteAccount = async () => {
+    if (loading) return;
+    setLoading(true);
+    try {
+      const res = await fetch("/api/profile", { method: "DELETE" });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data?.error || "Gagal menghapus akun");
+      toast.success("Akun berhasil dihapus.");
+      setConfirmOpen(false);
+      // Clear local state quickly for perceived responsiveness
+      setEmail("");
+      setNamaLengkap("");
+      setNomorTelepon("");
+      setAlamat("");
+      // Sign out to clear session and redirect home
+      await signOut({ callbackUrl: "/" });
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Gagal menghapus akun";
+      toast.error(msg);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleSave = async () => {
@@ -200,10 +215,10 @@ export default function ProfilePage() {
               <DialogTrigger asChild>
                 <Button
                   variant="destructive"
-                  disabled={!email}
+                  disabled={!email || loading}
                   className="sm:w-auto"
                 >
-                  Hapus Akun
+                  {loading ? "Memproses..." : "Hapus Akun"}
                 </Button>
               </DialogTrigger>
               <DialogContent>
