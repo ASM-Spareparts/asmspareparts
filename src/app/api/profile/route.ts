@@ -131,3 +131,63 @@ export async function GET() {
     const profile = Array.isArray(rows) ? rows[0] : null;
     return NextResponse.json({ profile });
 }
+
+export async function DELETE() {
+    const session = await getServerSession(authOptions);
+    const userId = (session?.user as { id?: string } | undefined)?.id;
+    if (!userId) {
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+    const uid = userId as string;
+
+    const SUPABASE_URL = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const SERVICE_ROLE =
+        process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE || process.env.SUPABASE_SECRET;
+    if (!SUPABASE_URL || !SERVICE_ROLE) {
+        return NextResponse.json(
+            { error: "Server not configured for persistence." },
+            { status: 500 }
+        );
+    }
+
+    const baseHeaders = {
+        apikey: SERVICE_ROLE,
+        Authorization: `Bearer ${SERVICE_ROLE}`,
+        Prefer: "return=representation",
+    } as const;
+
+    // Helper to DELETE and return count
+    async function del(url: string) {
+        const r = await fetch(url, { method: "DELETE", headers: baseHeaders });
+        if (!r.ok) {
+            const text = await r.text();
+            throw new Error(text || `Delete failed: ${url}`);
+        }
+        const data = await r.json().catch(() => []);
+        return Array.isArray(data) ? data.length : 0;
+    }
+
+    try {
+        // 1. Delete lottery codes owned by user
+        const codesCount = await del(`${SUPABASE_URL}/rest/v1/lottery_codes?user_id=eq.${encodeURIComponent(uid)}`);
+        // 2. Delete profile row
+        const profileCount = await del(`${SUPABASE_URL}/rest/v1/profiles?id=eq.${encodeURIComponent(uid)}`);
+        // 3. Delete auth accounts (OAuth provider links)
+        let accountsCount = 0;
+        try {
+            accountsCount = await del(`${SUPABASE_URL}/rest/v1/next_auth_accounts?userId=eq.${encodeURIComponent(uid)}`);
+        } catch {
+            // table may not exist
+        }
+        // 4. Delete auth user (if table present). Ignore failure gracefully.
+        let userCount = 0;
+        try {
+            userCount = await del(`${SUPABASE_URL}/rest/v1/next_auth_users?id=eq.${encodeURIComponent(uid)}`);
+        } catch {
+            // ignore – table may not exist or adapter not configured
+        }
+        return NextResponse.json({ success: true, deleted: { lottery_codes: codesCount, profile: profileCount, accounts: accountsCount, user: userCount } });
+    } catch (err) {
+        return NextResponse.json({ error: err instanceof Error ? err.message : 'Delete failed' }, { status: 500 });
+    }
+}
