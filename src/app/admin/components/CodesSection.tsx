@@ -200,11 +200,11 @@ export default function CodesSection() {
           </div>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-end gap-3">
             <div className="grid gap-2">
               <Label>Campaign</Label>
               <select
-                className="border rounded px-3 py-2"
+                className="border rounded px-3 py-2 min-w-[200px]"
                 value={selectedCampaignId}
                 onChange={(e) =>
                   setSelectedCampaignId(
@@ -223,7 +223,7 @@ export default function CodesSection() {
             <div className="grid gap-2">
               <Label>Hadiah</Label>
               <select
-                className="border rounded px-3 py-2"
+                className="border rounded px-3 py-2 min-w-[200px]"
                 value={selectedPrizeId}
                 onChange={(e) =>
                   setSelectedPrizeId(
@@ -250,6 +250,7 @@ export default function CodesSection() {
                   const n = Math.floor(Number(e.target.value));
                   setCodeCount(Number.isFinite(n) ? Math.max(1, n) : 1);
                 }}
+                className="w-32"
               />
             </div>
             <div className="self-end pb-1">
@@ -275,23 +276,33 @@ export default function CodesSection() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="border rounded-md overflow-hidden">
+          <div className="border rounded-md overflow-x-auto">
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className="w-[80px]">ID</TableHead>
+                  <TableHead className="w-[80px] hidden sm:table-cell">
+                    ID
+                  </TableHead>
                   <TableHead>Kode</TableHead>
-                  <TableHead>Campaign</TableHead>
-                  <TableHead>Hadiah</TableHead>
-                  <TableHead>Pemilik (user)</TableHead>
-                  <TableHead className="text-right">Dibuat</TableHead>
+                  <TableHead className="hidden md:table-cell">
+                    Campaign
+                  </TableHead>
+                  <TableHead className="hidden lg:table-cell">Hadiah</TableHead>
+                  <TableHead className="hidden md:table-cell">
+                    Pemilik (user)
+                  </TableHead>
+                  <TableHead className="text-right hidden sm:table-cell">
+                    Dibuat
+                  </TableHead>
                   <TableHead className="w-[90px]"></TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {codes.map((row) => (
                   <TableRow key={row.id}>
-                    <TableCell>#{row.id}</TableCell>
+                    <TableCell className="hidden sm:table-cell">
+                      #{row.id}
+                    </TableCell>
                     <TableCell className="font-mono">
                       <div className="flex items-center gap-2">
                         <span>{row.code}</span>
@@ -308,22 +319,22 @@ export default function CodesSection() {
                         </Button>
                       </div>
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="hidden md:table-cell">
                       {row.campaign?.name ?? row.campaign_id}
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="hidden lg:table-cell">
                       {row.prize
                         ? `Rank ${row.prize.rank} - ${row.prize.description}`
                         : row.prize_id}
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="hidden md:table-cell">
                       {row.user ? (
                         row.user.name || row.user.email || row.user.id
                       ) : (
                         <span className="text-slate-400">—</span>
                       )}
                     </TableCell>
-                    <TableCell className="text-right text-xs text-slate-500">
+                    <TableCell className="text-right text-xs text-slate-500 hidden sm:table-cell">
                       {new Date(row.created_at).toLocaleString()}
                     </TableCell>
                     <TableCell className="text-right">
