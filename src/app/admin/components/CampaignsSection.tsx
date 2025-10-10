@@ -159,7 +159,7 @@ export default function CampaignsSection() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
             <div className="grid gap-2">
               <Label>Nama</Label>
               <Input
@@ -243,7 +243,7 @@ export default function CampaignsSection() {
             {campaigns.map((c) => (
               <li
                 key={c.id}
-                className="flex items-center justify-between gap-2 border rounded px-3 py-2"
+                className="flex flex-wrap items-center justify-between gap-2 border rounded px-3 py-2"
               >
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">

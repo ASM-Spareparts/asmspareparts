@@ -6,6 +6,14 @@ import { isAdminEmail } from "@/lib/admin";
 import Link from "next/link";
 import Image from "next/image";
 import logoBlack from "@/assets/images/logo.svg";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export default async function AdminLayout({
   children,
@@ -73,7 +81,7 @@ export default async function AdminLayout({
       {/* Content */}
       <main className="flex-1 min-w-0">
         <header className="sticky top-0 z-10 bg-white/80 backdrop-blur border-b">
-          <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+          <div className="container mx-auto px-4 py-4 flex items-center justify-between gap-3">
             <div className="flex items-center gap-3 md:hidden">
               <Image
                 src={logoBlack}
@@ -84,12 +92,41 @@ export default async function AdminLayout({
               />
               <span className="font-semibold">Admin Dashboard</span>
             </div>
+            {/* Desktop back link */}
             <Link
               href="/"
-              className="text-sm text-slate-600 hover:text-slate-900"
+              className="hidden md:inline-block text-sm text-slate-600 hover:text-slate-900"
             >
               Kembali ke Beranda
             </Link>
+            {/* Mobile menu */}
+            <div className="md:hidden">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button size="sm" variant="outline" aria-label="Menu Admin">
+                    Menu
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56">
+                  <DropdownMenuItem asChild>
+                    <Link href="/admin">Overview</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/admin/campaigns">Campaigns</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/admin/prizes">Prizes</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/admin/codes">Lottery Codes</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <Link href="/">Kembali ke Beranda</Link>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
           </div>
         </header>
         <div className="container mx-auto px-4 py-8">{children}</div>

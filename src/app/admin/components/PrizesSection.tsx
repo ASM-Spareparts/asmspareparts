@@ -175,7 +175,7 @@ export default function PrizesSection() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
             <div className="grid gap-2">
               <Label>Campaign</Label>
               <select
@@ -266,7 +266,7 @@ export default function PrizesSection() {
             {prizesForSelected.map((p) => (
               <li
                 key={p.id}
-                className="flex items-center justify-between gap-2 border rounded px-3 py-2"
+                className="flex flex-wrap items-center justify-between gap-2 border rounded px-3 py-2"
               >
                 <div className="flex items-center gap-2">
                   <span className="font-medium">Rank {p.rank}:</span>
